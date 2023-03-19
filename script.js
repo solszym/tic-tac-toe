@@ -1,8 +1,11 @@
 const gameBoard = (() => {
   let board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   let lastPlayerName;
+  let winner;
+  let turnCount = 0;
+  let isOver = false;
 
-  const winningCondition = [
+  const winningConditions = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -26,21 +29,61 @@ const gameBoard = (() => {
       console.log("It's not your turn!");
       return true;
     }
+    if (winner != undefined) {
+      console.log("You can't make a move. Game is over.");
+      return true;
+    }
     return false;
   };
 
-  const setLastPlayerName = (name) => {
-    lastPlayerName = name;
+  const checkForWin = (playerName) => {
+    for (combination of winningConditions) {
+      if (
+        (board[combination[0]] === "X" || board[combination[0]] === "O") &&
+        board[combination[0]] === board[combination[1]] &&
+        board[combination[0]] === board[combination[2]] &&
+        board[combination[1]] === board[combination[2]]
+      ) {
+        console.log(`${playerName} won!`);
+        winner = playerName;
+        resetBoard();
+      }
+    }
   };
 
-  const getLastPlayerName = () => {
-    return lastPlayerName;
+  const checkForTie = () => {
+    if (turnCount === 9 && winner === undefined) {
+      console.log("It's a tie!");
+      resetBoard();
+      return true;
+    }
   };
 
-  const checkForWin = () => {};
+  const resetBoard = () => {
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    lastPlayerName = undefined;
+    winner = undefined;
+    turnCount = 0;
+    isOver = false;
+  };
+
+  const setLastPlayerName = (name) => (lastPlayerName = name);
+
+  const getLastPlayerName = () => lastPlayerName;
+
+  const setWinner = (player) => (winner = player);
+
+  const getWinner = () => winner;
+
+  const addTurnCount = () => turnCount++;
+
+  const getTurnCount = () => turnCount;
 
   const displayBoard = () => {
-    console.log(board);
+    console.log(`${board[0]} ${board[1]} ${board[2]}`);
+    console.log(`${board[3]} ${board[4]} ${board[5]}`);
+    console.log(`${board[6]} ${board[7]} ${board[8]}`);
+    console.log();
   };
 
   return {
@@ -51,27 +94,27 @@ const gameBoard = (() => {
     lastPlayerName,
     setLastPlayerName,
     getLastPlayerName,
+    winner,
+    getWinner,
+    addTurnCount,
+    getTurnCount,
+    checkForTie,
+    resetBoard,
   };
 })();
 
 const player = (name, sign) => {
-  let squaresTaken = [];
-
   return {
     name,
     sign,
     takeTurn(square) {
-      if (gameBoard.checkForTurn(name)) {
-        return;
-      }
-      //   console.log(`${name} making a move`);
+      if (gameBoard.checkForTurn(name)) return;
       gameBoard.mark(square, sign);
-      squaresTaken.push(square);
+      gameBoard.displayBoard();
+      gameBoard.addTurnCount();
       gameBoard.setLastPlayerName(name);
-    },
-
-    displaySquaresTaken() {
-      console.log(squaresTaken);
+      if (gameBoard.checkForTie()) return;
+      gameBoard.checkForWin(name);
     },
   };
 };
@@ -79,11 +122,34 @@ const player = (name, sign) => {
 player1 = player("Adam", "X");
 player2 = player("Jacob", "O");
 
-console.log(gameBoard.getLastPlayerName());
-player1.takeTurn(1);
-console.log(gameBoard.getLastPlayerName());
-player2.takeTurn(0);
-console.log(gameBoard.getLastPlayerName());
-player1.takeTurn(3);
-console.log(gameBoard.getLastPlayerName());
 gameBoard.displayBoard();
+
+player1.takeTurn(4);
+
+player2.takeTurn(0);
+
+player1.takeTurn(6);
+
+player2.takeTurn(2);
+
+player1.takeTurn(1);
+
+player2.takeTurn(7);
+
+player1.takeTurn(5);
+
+player2.takeTurn(3);
+
+player1.takeTurn(8);
+
+gameBoard.displayBoard();
+
+player1.takeTurn(4);
+
+player2.takeTurn(0);
+
+player1.takeTurn(6);
+
+player2.takeTurn(8);
+
+player1.takeTurn(2);
