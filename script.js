@@ -2,7 +2,7 @@ const gameBoard = (() => {
   let board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   let lastPlayerName;
   let winner;
-  let turnCount = 0;
+  let roundCount = 0;
   let isOver = false;
 
   const winningConditions = [
@@ -46,24 +46,24 @@ const gameBoard = (() => {
       ) {
         console.log(`${playerName} won!`);
         winner = playerName;
-        resetBoard();
+        isOver = true;
       }
     }
   };
 
   const checkForTie = () => {
-    if (turnCount === 9 && winner === undefined) {
+    if (roundCount === 9 && winner === undefined) {
       console.log("It's a tie!");
-      resetBoard();
+      isOver = true;
       return true;
     }
   };
 
-  const resetBoard = () => {
+  const reset = () => {
     board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     lastPlayerName = undefined;
     winner = undefined;
-    turnCount = 0;
+    roundCount = 0;
     isOver = false;
   };
 
@@ -75,9 +75,9 @@ const gameBoard = (() => {
 
   const getWinner = () => winner;
 
-  const addTurnCount = () => turnCount++;
+  const addroundCount = () => roundCount++;
 
-  const getTurnCount = () => turnCount;
+  const getroundCount = () => roundCount;
 
   const displayBoard = () => {
     console.log(`${board[0]} ${board[1]} ${board[2]}`);
@@ -96,10 +96,10 @@ const gameBoard = (() => {
     getLastPlayerName,
     winner,
     getWinner,
-    addTurnCount,
-    getTurnCount,
+    addroundCount,
+    getroundCount,
     checkForTie,
-    resetBoard,
+    reset,
   };
 })();
 
@@ -111,7 +111,7 @@ const player = (name, sign) => {
       if (gameBoard.checkForTurn(name)) return;
       gameBoard.mark(square, sign);
       gameBoard.displayBoard();
-      gameBoard.addTurnCount();
+      gameBoard.addroundCount();
       gameBoard.setLastPlayerName(name);
       if (gameBoard.checkForTie()) return;
       gameBoard.checkForWin(name);
@@ -142,14 +142,14 @@ player2.takeTurn(3);
 
 player1.takeTurn(8);
 
-gameBoard.displayBoard();
+// gameBoard.displayBoard();
 
-player1.takeTurn(4);
+// player1.takeTurn(4);
 
-player2.takeTurn(0);
+// player2.takeTurn(0);
 
-player1.takeTurn(6);
+// player1.takeTurn(6);
 
-player2.takeTurn(8);
+// player2.takeTurn(8);
 
-player1.takeTurn(2);
+// player1.takeTurn(2);
