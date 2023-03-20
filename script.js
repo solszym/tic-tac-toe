@@ -155,6 +155,11 @@ const displayController = (() => {
   const updateGameBoard = () => {
     for (let i = 0; i < gameFields.length; i++) {
       gameFields[i].innerText = gameBoard.getField(i);
+      if (gameBoard.getField(i) === "X") {
+        gameFields[i].style.color = "var(--dark-cyan)";
+      } else {
+        gameFields[i].style.color = "var(--light-yellow)";
+      }
     }
   };
 

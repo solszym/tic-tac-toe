@@ -65,6 +65,7 @@ header {
   align-items: center;
   font-size: 100px;
   border-radius: 5px;
+  transition: 0.1s;
 }
 
 .gameField:hover {
@@ -137,6 +138,7 @@ header {
 
 #resetButton:hover {
   cursor: pointer;
+  transition: 0.3s;
 }
 
 footer {
