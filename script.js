@@ -1,6 +1,27 @@
+const player = (name, sign) => {
+  return {
+    name,
+    sign,
+    takeTurn(square) {
+      if (gameBoard.checkForTurn(name)) return;
+      if (gameBoard.mark(square, sign) === false) return;
+      gameBoard.displayBoard();
+      gameBoard.addroundCount();
+      gameBoard.setLastPlayerName(name);
+      if (gameBoard.getLastPlayerName() == "Player X") {
+        displayController.setTurnMessage(`Player O turn`);
+      } else {
+        displayController.setTurnMessage(`Player X turn`);
+      }
+      if (gameBoard.checkForTie()) return;
+      gameBoard.checkForWin(name);
+    },
+  };
+};
+
 const gameBoard = (() => {
-  let board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-  let lastPlayerName;
+  let board = ["", "", "", "", "", "", "", "", ""];
+  let lastPlayerName = "";
   let winner;
   let roundCount = 0;
   let isOver = false;
@@ -17,11 +38,12 @@ const gameBoard = (() => {
   ];
 
   const mark = (square, playerSign) => {
-    if (board[square] != 0) {
+    if (board[square] != "") {
       console.log("This square is taken, choose another one!");
-      return;
+      return false;
     }
     board[square] = playerSign;
+    displayController.updateGameBoard();
   };
 
   const checkForTurn = (playerName) => {
@@ -46,6 +68,8 @@ const gameBoard = (() => {
       ) {
         console.log(`${playerName} won!`);
         winner = playerName;
+        displayController.addScore(playerName);
+        displayController.setTurnMessage(`${playerName} won!`);
         isOver = true;
       }
     }
@@ -55,16 +79,24 @@ const gameBoard = (() => {
     if (roundCount === 9 && winner === undefined) {
       console.log("It's a tie!");
       isOver = true;
+      displayController.addTieScore();
+      displayController.setTurnMessage("It's a tie");
       return true;
     }
   };
 
   const reset = () => {
-    board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    lastPlayerName = undefined;
+    board = ["", "", "", "", "", "", "", "", ""];
+    lastPlayerName = "";
     winner = undefined;
     roundCount = 0;
     isOver = false;
+    displayController.updateGameBoard();
+    displayController.setTurnMessage(`Player X turn`);
+  };
+
+  const getField = (field) => {
+    return board[field];
   };
 
   const setLastPlayerName = (name) => (lastPlayerName = name);
@@ -100,56 +132,62 @@ const gameBoard = (() => {
     getroundCount,
     checkForTie,
     reset,
+    getField,
   };
 })();
 
-const player = (name, sign) => {
-  return {
-    name,
-    sign,
-    takeTurn(square) {
-      if (gameBoard.checkForTurn(name)) return;
-      gameBoard.mark(square, sign);
-      gameBoard.displayBoard();
-      gameBoard.addroundCount();
-      gameBoard.setLastPlayerName(name);
-      if (gameBoard.checkForTie()) return;
-      gameBoard.checkForWin(name);
-    },
+const displayController = (() => {
+  const playerX = player("Player X", "X");
+  const playerO = player("Player O", "O");
+
+  const gameFields = document.querySelectorAll(".gameField");
+
+  gameFields.forEach((field) => {
+    field.addEventListener("click", () => {
+      if (gameBoard.getLastPlayerName() == "Player X") {
+        playerO.takeTurn(parseInt(field.dataset.index));
+      } else {
+        playerX.takeTurn(parseInt(field.dataset.index));
+      }
+    });
+  });
+
+  const updateGameBoard = () => {
+    for (let i = 0; i < gameFields.length; i++) {
+      gameFields[i].innerText = gameBoard.getField(i);
+    }
   };
-};
 
-player1 = player("Adam", "X");
-player2 = player("Jacob", "O");
+  const turnMessage = document.getElementById("message");
 
-gameBoard.displayBoard();
+  const setTurnMessage = (newMessage) => (turnMessage.innerText = newMessage);
 
-player1.takeTurn(4);
+  const resetButton = document.getElementById("resetButton");
 
-player2.takeTurn(0);
+  resetButton.onclick = () => gameBoard.reset();
 
-player1.takeTurn(6);
+  const playerXScore = document.getElementById("player1Score");
+  const playerOScore = document.getElementById("player2Score");
+  const tieScore = document.getElementById("tieScore");
 
-player2.takeTurn(2);
+  let currentXScore = 0;
+  let currentOScore = 0;
+  let tieCount = 0;
 
-player1.takeTurn(1);
+  const addScore = (playerName) => {
+    if (playerName === "Player X") {
+      currentXScore++;
+      playerXScore.innerText = currentXScore;
+    } else if (playerName === "Player O") {
+      currentOScore++;
+      playerOScore.innerText = currentOScore;
+    }
+  };
 
-player2.takeTurn(7);
+  const addTieScore = () => {
+    tieCount++;
+    tieScore.innerText = tieCount;
+  };
 
-player1.takeTurn(5);
-
-player2.takeTurn(3);
-
-player1.takeTurn(8);
-
-// gameBoard.displayBoard();
-
-// player1.takeTurn(4);
-
-// player2.takeTurn(0);
-
-// player1.takeTurn(6);
-
-// player2.takeTurn(8);
-
-// player1.takeTurn(2);
+  return { updateGameBoard, setTurnMessage, addScore, addTieScore };
+})();

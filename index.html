@@ -5,8 +5,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="script.js" defer></script>
-    <title>Tic-tac-toe</title>
+    <title>Tic-Tac-Toe</title>
   </head>
-  <body></body>
+  <body>
+    <header>Tic-Tac-Toe</header>
+    <div id="main-content">
+      <div id="message">Player X turn</div>
+      <div id="gameSpace">
+        <div id="gameBoard">
+          <div class="gameField" data-index="0"></div>
+          <div class="gameField" data-index="1"></div>
+          <div class="gameField" data-index="2"></div>
+          <div class="gameField" data-index="3"></div>
+          <div class="gameField" data-index="4"></div>
+          <div class="gameField" data-index="5"></div>
+          <div class="gameField" data-index="6"></div>
+          <div class="gameField" data-index="7"></div>
+          <div class="gameField" data-index="8"></div>
+        </div>
+      </div>
+      <div id="scoreBoard">
+        <div id="scoreBoardContent">
+          <div class="scoreField" id="player1ScoreField">
+            <div class="playerScore">Player X</div>
+            <div class="actualScore" id="player1Score">0</div>
+          </div>
+          <div class="scoreField" id="tiesField">
+            <div class="playerScore">Ties</div>
+            <div class="actualScore" id="tieScore">0</div>
+          </div>
+          <div class="scoreField" id="player2ScoreField">
+            <div class="playerScore">Player O</div>
+            <div class="actualScore" id="player2Score">0</div>
+          </div>
+        </div>
+      </div>
+      <div id="reset-container"><button id="resetButton">Reset</button></div>
+    </div>
+    <footer>Szymon Kowalczyk 2023</footer>
+  </body>
 </html>

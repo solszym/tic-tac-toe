@@ -1,0 +1,155 @@
+:root {
+  --main-font: "Quicksand", sans-serif;
+  --primary: #1a2b33;
+  --secondary: #1e3640;
+  --grey: #a9bec8;
+  --dark-cyan: #34c3be;
+  --light-yellow: #f2b138;
+  --red: #f32c2c;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: var(--main-font);
+  color: white;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  background-color: var(--primary);
+  font-family: var(--main-font);
+  font-size: 70px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+#main-content {
+  background-color: var(--primary);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0px 20px 0px;
+  font-size: 40px;
+}
+
+#gameSpace {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+#gameBoard {
+  display: grid;
+  grid-template-rows: repeat(3, 150px);
+  grid-template-columns: repeat(3, 150px);
+  gap: 10px;
+}
+
+.gameField {
+  background-color: #1e3640;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  border-radius: 5px;
+}
+
+.gameField:hover {
+  filter: brightness(90%);
+  cursor: pointer;
+}
+
+#scoreBoard {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+#scoreBoardContent {
+  display: grid;
+  /* grid-auto-flow: row; */
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 20px;
+  gap: 10px;
+  min-width: 470px;
+  width: 50%;
+}
+
+.scoreField {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+
+  /* min-width: 100px; */
+  /* flex-grow: 1; */
+  background-color: #34c3be;
+  color: var(--secondary);
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 5px;
+}
+
+#player1ScoreField {
+  background-color: var(--dark-cyan);
+}
+
+#tiesField {
+  background-color: var(--grey);
+}
+
+#player2ScoreField {
+  background-color: var(--light-yellow);
+}
+
+#reset-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#resetButton {
+  height: 70px;
+  margin: 20px;
+  width: 280px;
+  border-radius: 5px;
+  border: none;
+  font-family: var(--main-font);
+  font-weight: 500;
+  font-size: 25px;
+  color: white;
+  background-color: var(--secondary);
+}
+
+#resetButton:hover {
+  cursor: pointer;
+}
+
+footer {
+  margin-top: auto;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary);
+  color: white;
+}
+
+button:hover {
+  cursor: pointer;
+  filter: brightness(90%);
+}
