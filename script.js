@@ -13,8 +13,8 @@ const player = (name, sign) => {
       } else {
         displayController.setTurnMessage(`Player X turn`);
       }
-      if (gameBoard.checkForTie()) return;
       gameBoard.checkForWin(name);
+      if (gameBoard.checkForTie()) return;
     },
   };
 };
